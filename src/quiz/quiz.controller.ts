@@ -14,10 +14,10 @@ import {
 import { QuizService } from './quiz.service';
 import Quiz from './quiz.entity';
 import CreateQuizDto from './dto/createQuiz.dto';
-import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication';
 import FindOneParams from '../utils/params/findOneParams';
 import UpdateQuizDto from './dto/updateQuiz.dto';
 import RequestWithUser from '../authentication/types/requestWithUser';
+import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication.guard';
 
 @Controller('quiz')
 @UseGuards(JwtAuthenticationGuard)

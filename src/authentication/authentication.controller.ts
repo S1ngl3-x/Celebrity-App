@@ -13,8 +13,8 @@ import { AuthenticationService } from './authentication.service';
 import CreateUserDto from '../user/dto/createUserDto';
 import RequestWithUser from './types/requestWithUser';
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
-import JwtAuthenticationGuard from './guards/jwtAuthentication';
 import User from '../user/user.entity';
+import JwtAuthenticationGuard from './guards/jwtAuthentication.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)

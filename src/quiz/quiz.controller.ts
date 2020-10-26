@@ -27,7 +27,7 @@ export class QuizController {
 
   @Post('/')
   create(@Body() quizDto: CreateQuizDto, @Req() req: RequestWithUser): Promise<Quiz> {
-    return this.quizService.create(quizDto, req.user);
+    return this.quizService.createRandomWithQuestions(req.user);
   }
 
   @Get('/')

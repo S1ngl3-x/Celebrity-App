@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Quiz from '../quiz/quiz.entity';
 import User from '../user/user.entity';
+import Question from '../question/question.entity';
 
 @Module({
   imports: [
@@ -16,8 +17,9 @@ import User from '../user/user.entity';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
+        autoLoadEntities: true,
         // entities: [__dirname + '/../**/*.entity.ts'], // not working
-        entities: [Quiz, User],
+        // entities: [Quiz, User, Question],
         synchronize: true,
       }),
     }),

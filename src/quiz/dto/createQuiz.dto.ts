@@ -1,13 +1,3 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
-class CreateQuizDto {
-  @IsString()
-  @IsNotEmpty()
-  content: string;
-
-  @IsNumber()
-  @IsOptional()
-  result: number;
-}
+class CreateQuizDto {}
 
 export default CreateQuizDto;

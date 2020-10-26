@@ -7,6 +7,9 @@ import { Connection } from 'typeorm';
 import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { APP_FILTER } from '@nestjs/core';
+import { TrumpModule } from './trump/trump.module';
+import { SwiftModule } from './swift/swift.module';
+import { QuestionModule } from './question/question.module';
 import ExceptionsLoggerFilter from './utils/exceptionsLogger.filter';
 
 @Module({
@@ -27,6 +30,9 @@ import ExceptionsLoggerFilter from './utils/exceptionsLogger.filter';
     QuizModule,
     UserModule,
     AuthenticationModule,
+    TrumpModule,
+    SwiftModule,
+    QuestionModule,
   ],
   controllers: [],
   providers: [

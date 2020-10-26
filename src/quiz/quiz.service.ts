@@ -2,21 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Quiz from './quiz.entity';
 import { Repository } from 'typeorm';
-import CreateQuizDto from './dto/createQuiz.dto';
 import UpdateQuizDto from './dto/updateQuiz.dto';
 import QuizNotFoundException from './exceptions/quizNotFound.exception';
 import User from '../user/user.entity';
+import { QuestionService } from '../question/question.service';
 
 @Injectable()
 export class QuizService {
   constructor(
     @InjectRepository(Quiz)
     private quizRepository: Repository<Quiz>,
+    private questionService: QuestionService,
   ) {}
 
-  async create(quizDto: CreateQuizDto, user: User): Promise<Quiz> {
+  async createRandomWithQuestions(user: User): Promise<Quiz> {
+    const newQuiz = await this.create(user);
+
+    const amount = 5;
+
+    for (let i = 0; i < amount; i++) {
+      await this.questionService.createRandom({ quiz: newQuiz });
+    }
+
+    return newQuiz;
+  }
+
+  async create(user: User): Promise<Quiz> {
     const newQuiz = await this.quizRepository.create({
-      ...quizDto,
       user: user,
     });
     await this.quizRepository.save(newQuiz);

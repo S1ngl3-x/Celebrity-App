@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import CreateQuestionDto from './dto/createQuestion.dto';
 import QuestionNotFoundException from './exceptions/questionNotFound.exception';
 import UpdateQuestionDto from './dto/updateQuestion.dto';
-import generateRandomQuestionType from '../utils/helpers/generateRandomQuestionType';
 import QuestionType from './enums/questionType';
 import { TrumpService } from '../trump/trump.service';
 import { SwiftService } from '../swift/swift.service';
@@ -31,7 +30,7 @@ export class QuestionService {
   }
 
   async createRandom(questionDto: CreateRandomQuestionDto): Promise<Question> {
-    const questionType: QuestionType = generateRandomQuestionType;
+    const questionType: QuestionType = this.generateRandomQuestionType();
     console.log(questionType);
 
     const question = new Question();
@@ -73,5 +72,9 @@ export class QuestionService {
   async delete(id: number): Promise<void> {
     const deleteQuestion = await this.questionRepository.delete(id);
     if (!deleteQuestion.affected) throw new QuestionNotFoundException(id);
+  }
+
+  private generateRandomQuestionType(): QuestionType {
+    return Math.random() >= 0.5 ? QuestionType.SWIFT : QuestionType.TRUMP;
   }
 }

@@ -6,6 +6,7 @@ import UpdateQuizDto from './dto/updateQuiz.dto';
 import QuizNotFoundException from './exceptions/quizNotFound.exception';
 import User from '../user/user.entity';
 import { QuestionService } from '../question/question.service';
+import Question from '../question/question.entity';
 
 @Injectable()
 export class QuizService {
@@ -19,7 +20,7 @@ export class QuizService {
     const newQuiz = await this.create(user);
     const amount = 5;
 
-    const promises = [];
+    const promises: Promise<Question>[] = [];
     for (let i = 0; i < amount; i++) {
       promises.push(this.questionService.createRandom({quiz: newQuiz}))
     }

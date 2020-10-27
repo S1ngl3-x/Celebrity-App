@@ -17,12 +17,14 @@ export class QuizService {
 
   async createRandomWithQuestions(user: User): Promise<Quiz> {
     const newQuiz = await this.create(user);
-
     const amount = 5;
 
+    const promises = [];
     for (let i = 0; i < amount; i++) {
-      await this.questionService.createRandom({ quiz: newQuiz });
+      promises.push(this.questionService.createRandom({quiz: newQuiz}))
     }
+
+    newQuiz.questions = await Promise.all(promises);
 
     return newQuiz;
   }

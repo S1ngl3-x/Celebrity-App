@@ -31,7 +31,6 @@ export class QuestionService {
 
   async createRandom(questionDto: CreateRandomQuestionDto): Promise<Question> {
     const questionType: QuestionType = this.generateRandomQuestionType();
-    console.log(questionType);
 
     const question = new Question();
     question.quiz = questionDto.quiz;

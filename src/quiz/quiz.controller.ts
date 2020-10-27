@@ -18,6 +18,7 @@ import FindOneParams from '../utils/params/findOneParams';
 import UpdateQuizDto from './dto/updateQuiz.dto';
 import RequestWithUser from '../authentication/types/requestWithUser';
 import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication.guard';
+import AnswerQuizDto from './dto/answerQuiz.dto';
 
 @Controller('quiz')
 @UseGuards(JwtAuthenticationGuard)
@@ -26,8 +27,20 @@ export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
   @Post('/')
-  create(@Body() quizDto: CreateQuizDto, @Req() req: RequestWithUser): Promise<Quiz> {
-    return this.quizService.createRandomWithQuestions(req.user);
+  create(
+    @Body() quizDto: CreateQuizDto,
+    @Req() req: RequestWithUser,
+  ): Promise<Quiz> {
+    return this.quizService.createRandomWithQuestions(
+      req.user,
+    );
+  }
+
+  @Patch('/')
+  answerQuiz(
+    @Body() quizDto: AnswerQuizDto,
+  ): Promise<Quiz> {
+    return this.quizService.answerQuiz(quizDto);
   }
 
   @Get('/')
@@ -41,12 +54,15 @@ export class QuizController {
   }
 
   @Patch(':id')
-  updatePost(@Param() { id }: FindOneParams, @Body() quiz: UpdateQuizDto) {
+  updateQuiz(
+    @Param() { id }: FindOneParams,
+    @Body() quiz: UpdateQuizDto,
+  ) {
     return this.quizService.update(Number(id), quiz);
   }
 
   @Delete(':id')
-  deletePost(@Param() { id }: FindOneParams) {
+  deleteQuiz(@Param() { id }: FindOneParams) {
     return this.quizService.delete(Number(id));
   }
 }

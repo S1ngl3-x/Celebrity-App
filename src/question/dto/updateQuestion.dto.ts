@@ -1,26 +1,26 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import QuestionType from '../enums/questionType';
 import Quiz from '../../quiz/quiz.entity';
 
 class UpdateQuestionDto {
   @IsNumber()
   @IsOptional()
-  id: number;
+  id?: number;
 
   @IsString()
   @IsOptional()
-  context: string;
+  context?: string;
 
   @IsEnum(QuestionType)
   @IsOptional()
-  type: QuestionType;
+  type?: QuestionType;
 
-  @IsNumber()
+  @IsEnum(QuestionType)
   @IsOptional()
-  correctlyAnswered: number;
+  answer?: QuestionType;
 
   @IsOptional()
-  quiz: Quiz;
+  quiz?: Quiz;
 }
 
 export default UpdateQuestionDto;

@@ -11,9 +11,9 @@ class CreateQuestionDto {
   @IsNotEmpty()
   type: QuestionType;
 
-  @IsNumber()
+  @IsEnum(QuestionType)
   @IsOptional()
-  correctlyAnswered: number;
+  answer: QuestionType;
 
   @IsNotEmpty()
   quiz: Quiz;

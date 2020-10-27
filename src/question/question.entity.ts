@@ -23,8 +23,12 @@ class Question {
   })
   public type: QuestionType;
 
-  @Column({ nullable: true })
-  public correctlyAnswered?: number;
+  @Column({
+    type: 'enum',
+    enum: QuestionType,
+    nullable: true,
+  })
+  public answer: QuestionType;
 
   @Index('question_quizId_index')
   @ManyToOne(() => Quiz, (quiz: Quiz) => quiz.questions)

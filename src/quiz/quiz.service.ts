@@ -7,7 +7,6 @@ import QuizNotFoundException from './exceptions/quizNotFound.exception';
 import User from '../user/user.entity';
 import { QuestionService } from '../question/question.service';
 import Question from '../question/question.entity';
-import QuestionType from '../question/enums/questionType';
 
 @Injectable()
 export class QuizService {
@@ -17,9 +16,7 @@ export class QuizService {
     private questionService: QuestionService,
   ) {}
 
-  async createRandomWithQuestions(
-    user: User,
-  ): Promise<Quiz> {
+  async createRandomWithQuestions(user: User): Promise<Quiz> {
     const newQuiz = await this.create(user);
     const amount = 5;
 
@@ -75,22 +72,15 @@ export class QuizService {
     throw new QuizNotFoundException(id);
   }
 
-  async update(
-    id: number,
-    quizDto: UpdateQuizDto,
-  ): Promise<Quiz> {
+  async update(id: number, quizDto: UpdateQuizDto): Promise<Quiz> {
     await this.quizRepository.update(id, quizDto);
-    const updatedQuiz = await this.quizRepository.findOne(
-      id,
-      { relations: ['user'] },
-    );
+    const updatedQuiz = await this.quizRepository.findOne(id, { relations: ['user'] });
     if (updatedQuiz) return updatedQuiz;
     throw new QuizNotFoundException(id);
   }
 
   async delete(id: number): Promise<void> {
     const deleteQuiz = await this.quizRepository.delete(id);
-    if (!deleteQuiz.affected)
-      throw new QuizNotFoundException(id);
+    if (!deleteQuiz.affected) throw new QuizNotFoundException(id);
   }
 }

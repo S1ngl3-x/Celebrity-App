@@ -50,7 +50,9 @@ export class QuestionService {
   }
 
   async findAll(): Promise<Question[]> {
-    return await this.questionRepository.find({ relations: ['quiz'] });
+    return await this.questionRepository.find({
+      relations: ['quiz'],
+    });
   }
 
   async findById(id: number): Promise<Question> {

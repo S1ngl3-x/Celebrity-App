@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -19,6 +20,7 @@ import UpdateQuizDto from './dto/updateQuiz.dto';
 import RequestWithUser from '../authentication/types/requestWithUser';
 import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication.guard';
 import AnswerQuizDto from './dto/answerQuiz.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('quiz')
 @UseGuards(JwtAuthenticationGuard)
@@ -27,25 +29,29 @@ export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
   @Post('/')
-  create(
-    @Body() quizDto: CreateQuizDto,
-    @Req() req: RequestWithUser,
-  ): Promise<Quiz> {
-    return this.quizService.createRandomWithQuestions(
-      req.user,
-    );
+  create(@Body() quizDto: CreateQuizDto, @Req() req: RequestWithUser): Promise<Quiz> {
+    return this.quizService.createRandomWithQuestions(req.user);
   }
 
   @Patch('/')
-  answerQuiz(
-    @Body() quizDto: AnswerQuizDto,
-  ): Promise<Quiz> {
+  answerQuiz(@Body() quizDto: AnswerQuizDto): Promise<Quiz> {
     return this.quizService.answerQuiz(quizDto);
   }
 
   @Get('/')
-  findAll(): Promise<Quiz[]> {
-    return this.quizService.findAll();
+  async findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: RequestWithUser,
+  ): Promise<Pagination<Quiz>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.quizService.findAllByUser(
+      {
+        page,
+        limit,
+      },
+      req.user,
+    );
   }
 
   @Get(':id')
@@ -54,10 +60,7 @@ export class QuizController {
   }
 
   @Patch(':id')
-  updateQuiz(
-    @Param() { id }: FindOneParams,
-    @Body() quiz: UpdateQuizDto,
-  ) {
+  updateQuiz(@Param() { id }: FindOneParams, @Body() quiz: UpdateQuizDto) {
     return this.quizService.update(Number(id), quiz);
   }
 

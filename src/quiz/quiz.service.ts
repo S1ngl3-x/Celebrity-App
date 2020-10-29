@@ -7,6 +7,7 @@ import QuizNotFoundException from './exceptions/quizNotFound.exception';
 import User from '../user/user.entity';
 import { QuestionService } from '../question/question.service';
 import Question from '../question/question.entity';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class QuizService {
@@ -58,9 +59,12 @@ export class QuizService {
     return newQuiz;
   }
 
-  async findAll(): Promise<Quiz[]> {
-    return await this.quizRepository.find({
-      relations: ['user'],
+  async findAllByUser(
+    options: IPaginationOptions,
+    user: User,
+  ): Promise<Pagination<Quiz>> {
+    return paginate<Quiz>(this.quizRepository, options, {
+      user: user,
     });
   }
 

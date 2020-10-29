@@ -49,6 +49,7 @@ export class QuizController {
       {
         page,
         limit,
+        route: 'http://localhost:3000/quiz/',
       },
       req.user,
     );

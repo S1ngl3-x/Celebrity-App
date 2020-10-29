@@ -64,7 +64,7 @@ export class QuizService {
     user: User,
   ): Promise<Pagination<Quiz>> {
     return paginate<Quiz>(this.quizRepository, options, {
-      user: user,
+      where: { user: user.id },
     });
   }
 

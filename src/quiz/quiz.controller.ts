@@ -23,7 +23,7 @@ import AnswerQuizDto from './dto/answerQuiz.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('quiz')
-@UseGuards(JwtAuthenticationGuard)
+// @UseGuards(JwtAuthenticationGuard) // TODO - UNCOMMENT LATER
 @UseInterceptors(ClassSerializerInterceptor)
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}

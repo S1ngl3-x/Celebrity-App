@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -21,7 +23,7 @@ import RequestWithUser from '../authentication/types/requestWithUser';
 import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication.guard';
 import AnswerQuizDto from './dto/answerQuiz.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('quiz')
 @Controller('quiz')
@@ -34,19 +36,26 @@ export class QuizController {
   @ApiOperation({ summary: 'Create random quiz' })
   @ApiResponse({ status: 201, description: 'New quiz with questions' })
   @Post('/')
-  create(@Body() quizDto: CreateQuizDto, @Req() req: RequestWithUser): Promise<Quiz> {
+  create(@Req() req: RequestWithUser): Promise<Quiz> {
     return this.quizService.createRandomWithQuestions(req.user);
   }
 
   @ApiOperation({ summary: 'Submit your answer' })
   @ApiResponse({ status: 202, description: 'Quiz with questions and answers ' })
   @Patch('/')
-  answerQuiz(@Body() quizDto: AnswerQuizDto): Promise<Quiz> {
-    return this.quizService.answerQuiz(quizDto);
+  @HttpCode(202)
+  answerQuiz(@Body() quizDto: AnswerQuizDto, @Req() req: RequestWithUser): Promise<Quiz> {
+    const quiz: Quiz = {
+      ...quizDto,
+      user: req.user,
+    };
+    return this.quizService.answerQuiz(quiz);
   }
 
   @ApiOperation({ summary: 'Find all quizzes' })
   @ApiResponse({ status: 200, description: 'All quizzes with their questions' })
+  @ApiQuery({ name: 'page', example: 1, required: false })
+  @ApiQuery({ name: 'limit', example: 5, required: false })
   @Get('/')
   async findAll(
     @Query('page') page = 1,
@@ -66,20 +75,23 @@ export class QuizController {
 
   @ApiOperation({ summary: 'Find one quiz by id' })
   @ApiResponse({ status: 200, description: 'Quiz with its questions', type: Quiz })
+  @ApiResponse({ status: 404, description: 'Info that quiz with given id was not found' })
   @Get(':id')
   findById(@Param() { id }: FindOneParams): Promise<Quiz> {
     return this.quizService.findById(Number(id));
   }
 
-  @ApiOperation({ summary: 'Update quiz by id' })
-  @ApiResponse({ status: 202, description: 'Quiz with its questions' })
-  @Patch(':id')
-  updateQuiz(@Param() { id }: FindOneParams, @Body() quiz: UpdateQuizDto) {
-    return this.quizService.update(Number(id), quiz);
-  }
+  // @ApiOperation({ summary: 'Update quiz by id' })
+  // @ApiResponse({ status: 202, description: 'Quiz with its questions' })
+  // @Patch(':id')
+  // updateQuiz(@Param() { id }: FindOneParams, @Body() quiz: UpdateQuizDto) {
+  //   return this.quizService.update(Number(id), quiz);
+  // }
 
   @ApiOperation({ summary: 'Delete quiz by id' })
   @ApiResponse({ status: 204, description: 'returns nothing' })
+  @ApiResponse({ status: 404, description: 'Info that quiz with given id was not found' })
+  @HttpCode(204)
   @Delete(':id')
   deleteQuiz(@Param() { id }: FindOneParams) {
     return this.quizService.delete(Number(id));

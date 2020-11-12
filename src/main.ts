@@ -8,6 +8,7 @@ import * as helmet from 'helmet';
 import * as csurf from 'csurf';
 import * as rateLimit from 'express-rate-limit';
 import { ConfigService } from '@nestjs/config';
+import Question from './question/question.entity';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -31,7 +32,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('quiz')
     .build();
-  const document = SwaggerModule.createDocument(app, options);
+  const document = SwaggerModule.createDocument(app, options, {
+    extraModels: [Question],
+  });
   SwaggerModule.setup('api', app, document);
 
   const configService = app.get(ConfigService);

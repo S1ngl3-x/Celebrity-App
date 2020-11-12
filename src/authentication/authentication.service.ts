@@ -34,7 +34,6 @@ export class AuthenticationService {
     try {
       const user = await this.userService.findByEmail(email);
       await this.verifyPassword(password, user.password);
-      console.log(user);
       return user;
     } catch (error) {
       throw new HttpException('Wrong credentials', HttpStatus.BAD_REQUEST);

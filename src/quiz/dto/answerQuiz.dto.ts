@@ -1,15 +1,14 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 import Question from '../../question/question.entity';
-import User from '../../user/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 class AnswerQuizDto {
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   id: number;
 
-  @IsNotEmpty()
-  user: User;
-
+  @ApiProperty({ type: [Question] })
   @IsNotEmpty()
   questions: Question[];
 }

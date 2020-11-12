@@ -48,6 +48,7 @@ export class QuizService {
     }
 
     quiz.questions = await Promise.all(promises);
+    quiz.user.password = null; // TODO - remove this hotfix
     return quiz;
   }
 

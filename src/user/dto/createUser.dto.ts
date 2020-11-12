@@ -10,7 +10,7 @@ class CreateUserDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MinLength(3)
+  @MinLength(5)
   password: string;
 }
 

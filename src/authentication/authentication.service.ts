@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import CreateUserDto from '../user/dto/createUserDto';
+import CreateUserDto from '../user/dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import PostgresErrorCode from '../database/postgresErrorCode.enum';
 import { JwtService } from '@nestjs/jwt';
@@ -34,6 +34,7 @@ export class AuthenticationService {
     try {
       const user = await this.userService.findByEmail(email);
       await this.verifyPassword(password, user.password);
+      console.log(user);
       return user;
     } catch (error) {
       throw new HttpException('Wrong credentials', HttpStatus.BAD_REQUEST);

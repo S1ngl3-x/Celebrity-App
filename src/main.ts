@@ -7,6 +7,7 @@ import { ExcludeNullInterceptor } from './utils/interceptors/excludeNull.interce
 import * as helmet from 'helmet';
 import * as csurf from 'csurf';
 import * as rateLimit from 'express-rate-limit';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,6 +34,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(5000);
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT');
+
+  await app.listen(port);
 }
 bootstrap();

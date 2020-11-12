@@ -21,6 +21,7 @@ import LoginUserDto from '../user/dto/loginUser.dto';
 @ApiTags('authorization')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiResponse({ status: 400, description: 'Inappropriate input' })
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 

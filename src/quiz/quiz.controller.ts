@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -16,9 +15,7 @@ import {
 } from '@nestjs/common';
 import { QuizService } from './quiz.service';
 import Quiz from './quiz.entity';
-import CreateQuizDto from './dto/createQuiz.dto';
 import FindOneParams from '../utils/params/findOneParams';
-import UpdateQuizDto from './dto/updateQuiz.dto';
 import RequestWithUser from '../authentication/types/requestWithUser';
 import JwtAuthenticationGuard from '../authentication/guards/jwtAuthentication.guard';
 import AnswerQuizDto from './dto/answerQuiz.dto';
@@ -30,6 +27,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 @UseGuards(JwtAuthenticationGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiResponse({ status: 403, description: 'Access forbidden' })
+@ApiResponse({ status: 400, description: 'Inappropriate input' })
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
@@ -67,6 +65,27 @@ export class QuizController {
       {
         page,
         limit,
+        route: 'http://localhost:5000/quiz/', // todo - repair later
+      },
+      req.user,
+    );
+  }
+
+  @ApiOperation({ summary: 'Find all uncompleted quizzes' })
+  @ApiResponse({ status: 200, description: 'All quizzes with their questions' })
+  @ApiQuery({ name: 'page', example: 1, required: false })
+  @ApiQuery({ name: 'limit', example: 5, required: false })
+  @Get('/uncompleted')
+  async findUncompleted(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: RequestWithUser,
+  ): Promise<Pagination<Quiz>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.quizService.findUncompleted(
+      {
+        page,
+        limit,
         route: 'http://localhost:5000/quiz/',
       },
       req.user,
@@ -80,13 +99,6 @@ export class QuizController {
   findById(@Param() { id }: FindOneParams): Promise<Quiz> {
     return this.quizService.findById(Number(id));
   }
-
-  // @ApiOperation({ summary: 'Update quiz by id' })
-  // @ApiResponse({ status: 202, description: 'Quiz with its questions' })
-  // @Patch(':id')
-  // updateQuiz(@Param() { id }: FindOneParams, @Body() quiz: UpdateQuizDto) {
-  //   return this.quizService.update(Number(id), quiz);
-  // }
 
   @ApiOperation({ summary: 'Delete quiz by id' })
   @ApiResponse({ status: 204, description: 'returns nothing' })

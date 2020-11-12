@@ -1,4 +1,11 @@
-import { Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import User from '../user/user.entity';
 import Question from '../question/question.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -8,6 +15,9 @@ class Quiz {
   @ApiProperty({ example: 1, description: 'Id of a quiz' })
   @PrimaryGeneratedColumn()
   public id: number;
+
+  @Column({ default: false })
+  public completed?: boolean;
 
   @ApiProperty({ type: User, description: 'Id of a user the quiz belongs to' })
   @Index('quiz_userId_index')

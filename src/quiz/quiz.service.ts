@@ -47,9 +47,10 @@ export class QuizService {
       );
     }
 
-    quiz.questions = await Promise.all(promises);
-    quiz.user.password = null; // TODO - remove this hotfix
-    return quiz;
+    const updatedQuiz = await this.update(quiz.id, { id: quiz.id, completed: true });
+
+    updatedQuiz.questions = await Promise.all(promises);
+    return updatedQuiz;
   }
 
   async create(user: User): Promise<Quiz> {
@@ -66,6 +67,19 @@ export class QuizService {
   ): Promise<Pagination<Quiz>> {
     return paginate<Quiz>(this.quizRepository, options, {
       where: { user: user.id },
+    });
+  }
+
+  async findUncompleted(
+    options: IPaginationOptions,
+    user: User,
+  ): Promise<Pagination<Quiz>> {
+    console.log('dostal jsem se tady');
+    return paginate<Quiz>(this.quizRepository, options, {
+      where: {
+        user: user.id,
+        completed: false,
+      },
     });
   }
 

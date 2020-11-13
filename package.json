@@ -2,6 +2,9 @@
   "name": "nest-typescript-starter",
   "private": true,
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
   "scripts": {

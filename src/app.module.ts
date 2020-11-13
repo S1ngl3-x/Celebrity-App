@@ -26,7 +26,7 @@ import ExceptionsLoggerFilter from './utils/exceptionsLogger.filter';
         JWT_EXPIRATION_TIME: Joi.string().required(),
       }),
     }),
-    DatabaseModule,
+    // DatabaseModule,
     QuizModule,
     UserModule,
     AuthenticationModule,

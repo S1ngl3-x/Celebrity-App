@@ -16,7 +16,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ExcludeNullInterceptor()); // strip null values from returned data
   app.use(cookieParser());
   app.use(helmet()); // middleware for secure HTTP headers
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    origin: ['http://localhost:3000', 'https://via-frontend.vercel.app'],
+    exposedHeaders: ['set-cookie', 'Set-Cookie'],
+  });
   // app.use(csurf); // mitigate CSRF // not working currently
   app.use(
     rateLimit({

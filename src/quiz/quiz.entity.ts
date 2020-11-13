@@ -16,6 +16,7 @@ class Quiz {
   @PrimaryGeneratedColumn()
   public id: number;
 
+  @ApiProperty({ example: true, description: 'Indicates that quiz has been completed' })
   @Column({ default: false })
   public completed?: boolean;
 

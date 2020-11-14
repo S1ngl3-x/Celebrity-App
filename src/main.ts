@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe()); // validate incoming data
   app.useGlobalInterceptors(new ExcludeNullInterceptor()); // strip null values from returned data
   app.use(cookieParser());
-  app.use(helmet()); // middleware for secure HTTP headers
+  // app.use(helmet()); // middleware for secure HTTP headers
   app.enableCors({
     credentials: true,
     origin: [
@@ -25,6 +25,7 @@ async function bootstrap() {
     ],
     exposedHeaders: ['set-cookie', 'Set-Cookie'],
   });
+
   // app.use(csurf); // mitigate CSRF // not working currently
   app.use(
     rateLimit({

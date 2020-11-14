@@ -43,7 +43,7 @@ export class AuthenticationService {
   public getCookieWithJwtToken(userId: number) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=${this.configService.get(
+    return `Authentication=${token}; HttpOnly; Path=/;${this.getCookieSecurityPolicy()} ; Max-Age=${this.configService.get(
       'JWT_EXPIRATION_TIME',
     )}`;
   }
@@ -56,6 +56,14 @@ export class AuthenticationService {
     const isPasswordMatching = await bcrypt.compare(plainTextPassword, hashedPassword);
     if (!isPasswordMatching) {
       throw new HttpException('Wrong credentials', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  private getCookieSecurityPolicy(): string {
+    if (this.configService.get('NODE_ENV') === 'production') {
+      return 'SameSite=None; Secure;'; // enable cross site cookies and htpps only
+    } else {
+      return 'SameSite=Lax'; // allow http
     }
   }
 }

@@ -24,6 +24,7 @@ import ExceptionsLoggerFilter from './utils/exceptionsLogger.filter';
         PORT: Joi.number(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        NODE_ENV: Joi.string().required(),
       }),
     }),
     DatabaseModule,

@@ -31,7 +31,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
-  @ApiOperation({ summary: 'Create random quiz' })
+  @ApiOperation({ summary: 'Generate random quiz' })
   @ApiResponse({ status: 201, description: 'New quiz with questions' })
   @Post('/')
   create(@Req() req: RequestWithUser): Promise<Quiz> {

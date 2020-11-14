@@ -18,7 +18,11 @@ async function bootstrap() {
   app.use(helmet()); // middleware for secure HTTP headers
   app.enableCors({
     credentials: true,
-    origin: ['http://localhost:3000', 'https://via-frontend.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'https://via-frontend.vercel.app',
+      'https://celebrity-app.netlify.app',
+    ],
     exposedHeaders: ['set-cookie', 'Set-Cookie'],
   });
   // app.use(csurf); // mitigate CSRF // not working currently

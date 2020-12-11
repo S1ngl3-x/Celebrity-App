@@ -55,7 +55,7 @@ export class QuizController {
   @ApiQuery({ name: 'page', example: 1, required: false })
   @ApiQuery({ name: 'limit', example: 5, required: false })
   @Get('/')
-  async findAll(
+  findAll(
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Req() req: RequestWithUser,
@@ -76,7 +76,7 @@ export class QuizController {
   @ApiQuery({ name: 'page', example: 1, required: false })
   @ApiQuery({ name: 'limit', example: 5, required: false })
   @Get('/completed')
-  async findUncompleted(
+  findCompleted(
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Req() req: RequestWithUser,
@@ -86,7 +86,7 @@ export class QuizController {
       {
         page,
         limit,
-        route: 'http://localhost:5000/quiz/',
+        route: 'http://localhost:5000/quiz/', // todo- vuresit dynamicky podle toho, jeslti je to produkce nebo ne
       },
       req.user,
     );

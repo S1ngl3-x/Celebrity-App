@@ -74,8 +74,10 @@ export class QuizService {
     options: IPaginationOptions,
     user: User,
   ): Promise<Pagination<Quiz>> {
-    console.log('dostal jsem se tady');
-    return paginate<Quiz>(this.quizRepository, options, {
+    return await paginate<Quiz>(this.quizRepository, options, {
+      order: {
+        id: 'DESC',
+      },
       where: {
         user: user.id,
         completed: true,

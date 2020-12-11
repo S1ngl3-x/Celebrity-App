@@ -71,18 +71,18 @@ export class QuizController {
     );
   }
 
-  @ApiOperation({ summary: 'Find all uncompleted quizzes' })
+  @ApiOperation({ summary: 'Find all completed quizzes' })
   @ApiResponse({ status: 200, description: 'All quizzes with their questions' })
   @ApiQuery({ name: 'page', example: 1, required: false })
   @ApiQuery({ name: 'limit', example: 5, required: false })
-  @Get('/uncompleted')
+  @Get('/completed')
   async findUncompleted(
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Req() req: RequestWithUser,
   ): Promise<Pagination<Quiz>> {
     limit = limit > 100 ? 100 : limit;
-    return this.quizService.findUncompleted(
+    return this.quizService.findCompleted(
       {
         page,
         limit,

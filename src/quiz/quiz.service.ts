@@ -70,7 +70,7 @@ export class QuizService {
     });
   }
 
-  async findUncompleted(
+  async findCompleted(
     options: IPaginationOptions,
     user: User,
   ): Promise<Pagination<Quiz>> {
@@ -78,7 +78,7 @@ export class QuizService {
     return paginate<Quiz>(this.quizRepository, options, {
       where: {
         user: user.id,
-        completed: false,
+        completed: true,
       },
     });
   }
